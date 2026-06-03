@@ -11,8 +11,9 @@ repositories {
 
 dependencies {
     testImplementation(
-        "org.junit.jupiter:junit-jupiter:5.14.2",
-        "com.codeborne:selenide:7.16.2")
+            "org.junit.jupiter:junit-jupiter:5.14.2",
+            "com.codeborne:selenide:7.16.2",
+            "org.assertj:assertj-core:3.27.7")
 }
 
 tasks.withType(JavaCompile).configureEach {
