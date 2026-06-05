@@ -1,16 +1,22 @@
 package tests;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PracticeFormTests extends BaseTest {
     @BeforeEach
-    public void beforeEach() {
+    public void setUpPracticeFormTests() {
         Selenide.open("/automation-practice-form");
     }
 
@@ -19,32 +25,48 @@ public class PracticeFormTests extends BaseTest {
         String firstName = "John";
         String lastName = "Deer";
         String testEmail = "test@test.com";
+        String gender = "Male";
         String mobile = "0123456789";
-        String dateOfBirth = "02 Feb 2000";
+        String dayOfBirth = "02";
+        String monthOfBirth = "February";
+        String yearOfBirth = "2000";
         String subject = "maths";
+        String hobby = "Music";
         String fileName = "smile.jpg";
+        String state = "Haryana";
+        String city = "Panipat";
         String address = "220 LA Richardson 12";
 
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#userEmail").val(testEmail);
-        $("#gender-radio-1").click();
+        $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").val(mobile);
-        $("#dateOfBirthInput").val(dateOfBirth);
+        setDateOfBirthBySelect(dayOfBirth, monthOfBirth, yearOfBirth);
         $("#subjectsInput").val(subject).pressEnter();
-        $("#hobbies-checkbox-2").click();
+        $("#hobbiesWrapper").$(byText(hobby)).click();
         // select picture
         $("#uploadPicture").uploadFromClasspath(fileName);
         $("#currentAddress").val(address);
         // select state
         $("#state").click();
-        $("#react-select-3-option-1").click();
+        $x(String.format("//*[@id and text()='%s']", state)).click();
         // select city
         $("#city").click();
-        $("#react-select-4-option-1").click();
+        $x(String.format("//*[@id and text()='%s']", city)).click();
         // submit and close
         $("#submit").click();
+        SelenideElement table = $(".table-responsive").shouldBe(Condition.visible, Duration.ofSeconds(6));
+        assertThat(table.isDisplayed()).isTrue();
         $("#closeLargeModal").click();
+    }
+
+    public void setDateOfBirthBySelect(String day, String month, String year) {
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption(month);
+        $(".react-datepicker__year-select").selectOption(year);
+        $(String.format(".react-datepicker__day--0%s:not(.react-datepicker__day--outside-month)", day))
+            .click();
     }
 
     @Test
@@ -59,6 +81,8 @@ public class PracticeFormTests extends BaseTest {
         $("#userNumber").val(mobile);
 
         $("#submit").scrollTo().click();
+        SelenideElement table = $(".table-responsive").shouldBe(Condition.visible, Duration.ofSeconds(6));
+        assertThat(table.isDisplayed()).isTrue();
         $("#closeLargeModal").click();
     }
 

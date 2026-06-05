@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class TextBoxTests extends BaseTest {
 
     @BeforeEach
-    public void beforeEach() {
+    public void setUpTextBoxTests() {
         Selenide.open("/text-box");
     }
 
@@ -42,6 +42,5 @@ public class TextBoxTests extends BaseTest {
     void negativeNoneOfTheFormFieldsAreFilledInTest() {
         $("#submit").scrollTo().click();
         $("#output").shouldNotBe(Condition.visible);
-
     }
 }
