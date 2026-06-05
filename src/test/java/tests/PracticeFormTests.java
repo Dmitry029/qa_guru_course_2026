@@ -6,8 +6,11 @@ import com.codeborne.selenide.SelenideElement;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pages.components.CalendarComponent;
+import pages.components.ResultOfFillingOutTheFormComponent;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -30,20 +33,37 @@ public class PracticeFormTests extends BaseTest {
         String dayOfBirth = "02";
         String monthOfBirth = "February";
         String yearOfBirth = "2000";
-        String subject = "maths";
+        String subject = "Maths";
         String hobby = "Music";
         String fileName = "smile.jpg";
         String state = "Haryana";
         String city = "Panipat";
         String address = "220 LA Richardson 12";
 
+        List<String> expectedData = List.of(
+            firstName + " " + lastName,
+            testEmail,
+            gender,
+            mobile,
+            dayOfBirth + " " + monthOfBirth + " " + yearOfBirth,
+            subject,
+            hobby,
+            fileName,
+            address,
+            state + " " + city
+        );
+
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#userEmail").val(testEmail);
         $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").val(mobile);
-        setDateOfBirthBySelect(dayOfBirth, monthOfBirth, yearOfBirth);
-        $("#subjectsInput").val(subject).pressEnter();
+        new CalendarComponent().setDateOfBirthBySelect(dayOfBirth, monthOfBirth, yearOfBirth);
+        // $("#subjectsInput").click();
+        $("#subjectsInput").sendKeys(subject.substring(0, 2));
+        $("[class~=subjects-auto-complete__menu]").click();
+
+        ;//$(byText(subject));
         $("#hobbiesWrapper").$(byText(hobby)).click();
         // select picture
         $("#uploadPicture").uploadFromClasspath(fileName);
@@ -58,31 +78,31 @@ public class PracticeFormTests extends BaseTest {
         $("#submit").click();
         SelenideElement table = $(".table-responsive").shouldBe(Condition.visible, Duration.ofSeconds(6));
         assertThat(table.isDisplayed()).isTrue();
+        new ResultOfFillingOutTheFormComponent().checkFormIsFilledOutCorrectly(expectedData);
         $("#closeLargeModal").click();
-    }
-
-    private void setDateOfBirthBySelect(String day, String month, String year) {
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption(month);
-        $(".react-datepicker__year-select").selectOption(year);
-        $(String.format(".react-datepicker__day--0%s:not(.react-datepicker__day--outside-month)", day))
-            .click();
     }
 
     @Test
     void fillOnlyRequiredFieldsTest() {
         String firstName = "Mary";
         String lastName = "Tompson";
+        String gender = "Male";
         String mobile = "0123456789";
+        List<String> expectedData = List.of(
+            firstName + " " + lastName,
+            gender,
+            mobile
+        );
 
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
-        $("#gender-radio-1").click();
+        $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").val(mobile);
 
         $("#submit").scrollTo().click();
         SelenideElement table = $(".table-responsive").shouldBe(Condition.visible, Duration.ofSeconds(6));
         assertThat(table.isDisplayed()).isTrue();
+        new ResultOfFillingOutTheFormComponent().checkFormIsFilledOutCorrectly(expectedData);
         $("#closeLargeModal").click();
     }
 
