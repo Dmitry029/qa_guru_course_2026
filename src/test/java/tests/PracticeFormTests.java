@@ -18,27 +18,44 @@ import static com.codeborne.selenide.Selenide.$x;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PracticeFormTests extends BaseTest {
+    String firstName;
+    String lastName ;
+    String testEmail;
+    String gender;
+    String mobile;
+    String dayOfBirth;
+    String monthOfBirth;
+    String yearOfBirth;
+    String subject;
+    String hobby;
+    String fileName;
+    String state;
+    String city;
+    String address;
+
+
     @BeforeEach
     public void setUpPracticeFormTests() {
         Selenide.open("/automation-practice-form");
+
+        firstName = "John";
+        lastName = "Deer";
+        testEmail = "test@test.com";
+        gender = "Male";
+        mobile = "0123456789";
+        dayOfBirth = "02";
+        monthOfBirth = "February";
+        yearOfBirth = "2000";
+        subject = "Maths";
+        hobby = "Music";
+        fileName = "smile.jpg";
+        state = "Haryana";
+        city = "Panipat";
+        address = "220 LA Richardson 12";
     }
 
     @Test
     void fillAllFieldsOfTheFormTest() {
-        String firstName = "John";
-        String lastName = "Deer";
-        String testEmail = "test@test.com";
-        String gender = "Male";
-        String mobile = "0123456789";
-        String dayOfBirth = "02";
-        String monthOfBirth = "February";
-        String yearOfBirth = "2000";
-        String subject = "Maths";
-        String hobby = "Music";
-        String fileName = "smile.jpg";
-        String state = "Haryana";
-        String city = "Panipat";
-        String address = "220 LA Richardson 12";
 
         List<String> expectedData = List.of(
             firstName + " " + lastName,
@@ -63,7 +80,7 @@ public class PracticeFormTests extends BaseTest {
         $("#subjectsInput").sendKeys(subject.substring(0, 2));
         $("[class~=subjects-auto-complete__menu]").click();
 
-        ;//$(byText(subject));
+        //$(byText(subject));
         $("#hobbiesWrapper").$(byText(hobby)).click();
         // select picture
         $("#uploadPicture").uploadFromClasspath(fileName);
@@ -84,10 +101,6 @@ public class PracticeFormTests extends BaseTest {
 
     @Test
     void fillOnlyRequiredFieldsTest() {
-        String firstName = "Mary";
-        String lastName = "Tompson";
-        String gender = "Male";
-        String mobile = "0123456789";
         List<String> expectedData = List.of(
             firstName + " " + lastName,
             gender,
@@ -108,10 +121,6 @@ public class PracticeFormTests extends BaseTest {
 
     @Test
     void negativeLessThanTenDigitsIntoThePhoneFieldTest() {
-        String firstName = "Mary";
-        String lastName = "Tompson";
-        String mobile = "012345678";
-
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#gender-radio-1").click();
@@ -124,10 +133,6 @@ public class PracticeFormTests extends BaseTest {
 
     @Test
     void negativeDoNotSelectGenderTest() {
-        String firstName = "Mary";
-        String lastName = "Tompson";
-        String mobile = "012345678";
-
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#userNumber").val(mobile);
@@ -139,9 +144,6 @@ public class PracticeFormTests extends BaseTest {
 
     @Test
     void negativeDoNotFillFirstNameTest() {
-        String lastName = "Tompson";
-        String mobile = "0123456780";
-
         $("#lastName").val(lastName);
         $("#gender-radio-1").click();
         $("#userNumber").val(mobile);

@@ -10,32 +10,42 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class TextBoxTests extends BaseTest {
 
+    String userName;
+    String userEmail;
+    String firstAddress;
+    String secondAddress;
+
     @BeforeEach
     public void setUpTextBoxTests() {
         Selenide.open("/text-box");
+
+        userName = "Alex Black";
+        userEmail = "alex@black.com";
+        firstAddress = "first address 1";
+        secondAddress = "second address 2";
     }
 
     @Test
     void successFulFillTest() {
 
-        $("[id=userName]").val("Alex Black");
-        $("[id=userEmail]").val("alex@black.com");
-        $("[id=currentAddress]").val("first address 1");
-        $("[id=permanentAddress]").val("second address 2");
+        $("[id=userName]").val(userName);
+        $("[id=userEmail]").val(userEmail);
+        $("[id=currentAddress]").val(firstAddress);
+        $("[id=permanentAddress]").val(secondAddress);
         $("#submit").scrollTo().click();
 
-        $("#name").shouldHave(text("Alex Black"));
-        $("[id=output] [id=email]").shouldHave(text("alex@black.com"));
-        $("[id=output] [id=currentAddress]").shouldHave(text("first address 1"));
-        $("[id=output] [id=permanentAddress]").shouldHave(text("second address 2"));
+        $("#name").shouldHave(text(userName));
+        $("[id=output] [id=email]").shouldHave(text(userEmail));
+        $("[id=output] [id=currentAddress]").shouldHave(text(firstAddress));
+        $("[id=output] [id=permanentAddress]").shouldHave(text(secondAddress));
     }
 
     @Test
     void oneFieldFillTest() {
 
-        $("[id=userName]").val("Alex Black");
+        $("[id=userName]").val(userName);
         $("#submit").scrollTo().click();
-        $("#name").shouldHave(text("Alex Black"));
+        $("#name").shouldHave(text(userName));
     }
 
     @Test
