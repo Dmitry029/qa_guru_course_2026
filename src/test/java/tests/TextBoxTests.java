@@ -7,27 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
+import static tests.testdata.TestData.*;
 
 public class TextBoxTests extends BaseTest {
-
-    String userName;
-    String userEmail;
-    String firstAddress;
-    String secondAddress;
 
     @BeforeEach
     public void setUpTextBoxTests() {
         Selenide.open("/text-box");
-
-        userName = "Alex Black";
-        userEmail = "alex@black.com";
-        firstAddress = "first address 1";
-        secondAddress = "second address 2";
     }
 
     @Test
     void successFulFillTest() {
-
         $("[id=userName]").val(userName);
         $("[id=userEmail]").val(userEmail);
         $("[id=currentAddress]").val(firstAddress);
