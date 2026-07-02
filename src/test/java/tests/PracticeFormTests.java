@@ -19,10 +19,11 @@ import static tests.testdata.TestData.*;
 
 public class PracticeFormTests extends BaseTest {
 
-    @BeforeEach
+
+    /*@BeforeEach
     public void setUpPracticeFormTests() {
         Selenide.open("/automation-practice-form");
-    }
+    }*/
 
     @Test
     void fillAllFieldsOfTheFormTest() {
@@ -40,12 +41,14 @@ public class PracticeFormTests extends BaseTest {
             state + " " + city
         );
 
+        registrationPage.openPage();
+
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#userEmail").val(testEmail);
         $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").val(mobile);
-        new CalendarComponent().setDateOfBirthBySelect(dayOfBirth, monthOfBirth, yearOfBirth);
+        new CalendarComponent().setDate(dayOfBirth, monthOfBirth, yearOfBirth);
         $("#subjectsInput").sendKeys(subject.substring(0, 2));
         $("[class~=subjects-auto-complete__menu]").click();
         $("#hobbiesWrapper").$(byText(hobby)).click();
