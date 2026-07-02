@@ -6,7 +6,6 @@ import com.codeborne.selenide.SelenideElement;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pages.components.CalendarComponent;
 import pages.components.ResultOfFillingOutTheFormComponent;
 
 import java.time.Duration;
@@ -17,6 +16,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static tests.testdata.TestData.*;
 
+//https://demoqa.com/automation-practice-form
 public class PracticeFormTests extends BaseTest {
 
     @BeforeEach
@@ -26,6 +26,20 @@ public class PracticeFormTests extends BaseTest {
 
     @Test
     void fillAllFieldsOfTheFormTest() {
+
+        registrationPage//.openPage()
+            .typeFirstName(firstName)
+            .typeLastName(lastName)
+            .typeUserEmail(testEmail)
+            .setGender(gender)
+            .typePhoneNumber(mobile)
+            .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
+            .setSubject(subject)
+            .setHobby(hobby)
+            .uploadPicture(fileName)
+            .setAddress(address)
+            .setStateAndCity(state, city)
+            .submitForm();
 
         List<String> expectedData = List.of(
             firstName + " " + lastName,
@@ -40,26 +54,9 @@ public class PracticeFormTests extends BaseTest {
             state + " " + city
         );
 
-        $("#firstName").val(firstName);
-        $("#lastName").val(lastName);
-        $("#userEmail").val(testEmail);
-        $("#genterWrapper").$(byText(gender)).click();
-        $("#userNumber").val(mobile);
-        new CalendarComponent().setDateOfBirthBySelect(dayOfBirth, monthOfBirth, yearOfBirth);
-        $("#subjectsInput").sendKeys(subject.substring(0, 2));
-        $("[class~=subjects-auto-complete__menu]").click();
-        $("#hobbiesWrapper").$(byText(hobby)).click();
-        $("#uploadPicture").uploadFromClasspath(fileName);
-        $("#currentAddress").val(address);
-        $("#state").click();
-        $("#state").$(byText(state)).click();
-        $("#city").click();
-        $("#city").$(byText(city)).click();
-        $("#submit").click();
-        SelenideElement table = $(".table-responsive").shouldBe(Condition.visible, Duration.ofSeconds(6));
-        assertThat(table.isDisplayed()).isTrue();
-        new ResultOfFillingOutTheFormComponent().checkFormIsFilledOutCorrectly(expectedData);
-        $("#closeLargeModal").click();
+        assertThat(resultComponent.isResultFormPresent()).isTrue();
+        assertThat(resultComponent.actualData()).containsAll(expectedData);
+        resultComponent.closeLargeModal();
     }
 
     @Test
