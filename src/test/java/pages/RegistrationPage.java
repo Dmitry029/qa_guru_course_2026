@@ -5,15 +5,17 @@ import pages.components.CalendarComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class RegistrationPage {
 
     CalendarComponent calendar = new CalendarComponent();
 
+    private final SelenideElement pageTitle = $(".practice-form-wrapper");
     private final SelenideElement firstNameInput = $("#firstName");
     private final SelenideElement lastNameInput = $("#lastName");
-    private final SelenideElement userEmaiInput = $("#userEmail");
+    private final SelenideElement userEmailInput = $("#userEmail");
     private final SelenideElement genderContainer = $("#genterWrapper");
     private final SelenideElement phoneNumberInput = $("#userNumber");
     private final SelenideElement subjectsInput = $("#subjectsInput");
@@ -25,12 +27,11 @@ public class RegistrationPage {
     private final SelenideElement citySelect = $("#city");
     private final SelenideElement stateCityContainer = $("#stateCity-wrapper");
     private final SelenideElement submitButton = $("#submit");
+    private final SelenideElement genderButtons = $("[for=gender-radio-1]");
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-       // executeJavaScript("$('#fixedban').remove()");
-       // executeJavaScript("$('footer').remove()");
+        pageTitle.shouldHave(text("Student Registration Form"));
         return this;
     }
 
@@ -45,7 +46,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage typeUserEmail(String value) {
-        userEmaiInput.setValue(value);
+        userEmailInput.setValue(value);
         return this;
     }
 
@@ -86,16 +87,14 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setState(String value) {
+    public void setState(String value) {
         stateSelect.click();
         stateCityContainer.$(byText(value)).click();
-        return this;
     }
 
-    public RegistrationPage setCity(String value) {
+    public void setCity(String value) {
         citySelect.click();
         stateCityContainer.$(byText(value)).click();
-        return this;
     }
 
     public RegistrationPage setStateAndCity(String state, String city) {
@@ -105,11 +104,22 @@ public class RegistrationPage {
     }
 
     public void submitForm() {
-        submitButton.click();
+        submitButton.scrollTo().click();
     }
 
-    public RegistrationPage checkResult(String key, String value) {
+    public String getElementUserNumberCssValue(String propertyName) {
+        return phoneNumberInput.getCssValue(propertyName);
+    }
 
-        return this;
+    public String getElementFirstNameCssValue(String propertyName) {
+        return firstNameInput.getCssValue(propertyName);
+    }
+
+    public String getElementLastNameCssValue(String propertyName) {
+        return lastNameInput.getCssValue(propertyName);
+    }
+
+    public String getElementGenderCssValue(String propertyName) {
+        return genderButtons.getCssValue(propertyName);
     }
 }

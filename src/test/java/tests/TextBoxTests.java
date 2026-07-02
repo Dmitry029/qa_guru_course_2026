@@ -1,46 +1,43 @@
 package tests;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
+import static org.assertj.core.api.Assertions.assertThat;
 import static tests.testdata.TestData.*;
 
 public class TextBoxTests extends BaseTest {
 
-    @BeforeEach
-    public void setUpTextBoxTests() {
-        Selenide.open("/text-box");
-    }
-
     @Test
     void successFulFillTest() {
-        $("[id=userName]").val(userName);
-        $("[id=userEmail]").val(userEmail);
-        $("[id=currentAddress]").val(firstAddress);
-        $("[id=permanentAddress]").val(secondAddress);
-        $("#submit").scrollTo().click();
 
-        $("#name").shouldHave(text(userName));
-        $("[id=output] [id=email]").shouldHave(text(userEmail));
-        $("[id=output] [id=currentAddress]").shouldHave(text(firstAddress));
-        $("[id=output] [id=permanentAddress]").shouldHave(text(secondAddress));
+        textBoxPage.openPage()
+            .typeUserName(userName)
+            .typeEmail(userEmail)
+            .typeCurrentAddress(firstAddress)
+            .typePermanentAddress(secondAddress)
+            .submitForm();
+
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(textBoxPage.getUserName().contains(userName));
+        softAssertions.assertThat(textBoxPage.getUserEmail().contains(userEmail));
+        softAssertions.assertThat(textBoxPage.getUserCurrentAddress().contains(firstAddress));
+        softAssertions.assertThat(textBoxPage.getUserPermanentAddress().contains(secondAddress));
+        softAssertions.assertAll();
     }
 
     @Test
     void oneFieldFillTest() {
-
-        $("[id=userName]").val(userName);
-        $("#submit").scrollTo().click();
-        $("#name").shouldHave(text(userName));
+        textBoxPage.openPage()
+            .typeUserName(userName)
+            .submitForm();
+        assertThat(textBoxPage.getUserName().contains(userName));
     }
 
     @Test
     void negativeNoneOfTheFormFieldsAreFilledInTest() {
-        $("#submit").scrollTo().click();
-        $("#output").shouldNotBe(Condition.visible);
+        textBoxPage.openPage()
+            .submitForm();
+        assertThat(textBoxPage.isOutputWindowVisible()).isFalse();
     }
 }
