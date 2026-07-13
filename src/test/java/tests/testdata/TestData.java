@@ -1,24 +1,94 @@
 package tests.testdata;
 
+import com.github.javafaker.Faker;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 public class TestData {
 
-    public static String firstName = "John";
-    public static String lastName = "Deer";
-    public static String testEmail = "test@test.com";
-    public static String gender = "Male";
-    public static String mobile = "0123456789";
-    public static String dayOfBirth = "02";
-    public static String monthOfBirth = "February";
-    public static String yearOfBirth = "2000";
-    public static String subject = "Maths";
-    public static String hobby = "Music";
-    public static String fileName = "smile.jpg";
-    public static String state = "Haryana";
-    public static String city = "Panipat";
-    public static String address = "220 LA Richardson 12";
+    private static final Faker faker = new Faker();
 
-    public static String userName = "Alex Black";
-    public static String userEmail = "alex@black.com";
-    public static String firstAddress = "first address 1";
-    public static String secondAddress ="second address 2";
+    public static String getFirstName() {
+        return faker.name().firstName();
+    }
+
+    public static String getLastName() {
+        return faker.name().lastName();
+    }
+
+    public static String getEmail() {
+        return faker.internet().emailAddress();
+    }
+
+    public static String getGender() {
+        List<String> genders = List.of("Male", "Female", "Other");
+        int index = faker.number().numberBetween(0, genders.size() - 1);
+        return genders.get(index);
+    }
+
+    public static String getMobile() {
+        return faker.number().digits(10);
+    }
+
+    public static String getDateOfBirth() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        Date date = faker.date().birthday();
+        return formatter.format(date);
+    }
+
+    public static String getSubject() {
+        List<String> subjects = List.of("Maths", "Biology", "Computer Science", "Commerce", "Accounting", "Economics"
+            , "Social Studies", "History", "Physics");
+        int index = faker.number().numberBetween(0, subjects.size() - 1);
+        return subjects.get(index);
+    }
+
+    public static String getHobby() {
+        List<String> hobbies = List.of("Sports", "Reading", "Music");
+        int index = faker.number().numberBetween(0, hobbies.size() - 1);
+        return hobbies.get(index);
+    }
+
+    public static String getFile() {
+        List<String> files = List.of("smile1.jpg", "smile2.jpg", "smile3.jpg");
+        int index = faker.number().numberBetween(0, files.size() - 1);
+        return files.get(index);
+    }
+
+    public static String getAddress() {
+        return faker.address().streetAddress();
+    }
+
+    public static String getState() {
+        List<String> states = List.of("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
+        int index = faker.number().numberBetween(0, states.size() - 1);
+        return states.get(index);
+    }
+
+    public static String getCity(String state) {
+        List<String> cities = switch (state) {
+            case "Rajasthan" -> List.of("Jaipur", "Jaiselmer");
+            case "Haryana" -> List.of("Karnal", "Panipat");
+            case "Uttar Pradesh" -> List.of("Agra", "Lucknow", "Merrut");
+            case "NCR" -> List.of("Delhi", "Gurgaon", "Noida");
+            default -> throw new IllegalStateException("Unexpected value: " + state);
+        };
+        int index = faker.number().numberBetween(0, cities.size() - 1);
+        return cities.get(index);
+    }
+
+    public static String getUserName() {
+        return faker.name().fullName();
+    }
+
+    public static String getSecondAddress() {
+        return faker.address().streetAddress();
+    }
+    //public static String userName = "Alex Black";
+    //public static String userEmail = "alex@black.com";
+    //public static String firstAddress = "first address 1";
+    //public static String secondAddress ="second address 2";
 }

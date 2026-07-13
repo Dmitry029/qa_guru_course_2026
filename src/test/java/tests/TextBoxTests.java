@@ -8,6 +8,11 @@ import static tests.testdata.TestData.*;
 
 public class TextBoxTests extends BaseTest {
 
+    private final String userName = getUserName();
+    private final String userEmail = getEmail();
+    private final String firstAddress = getAddress();
+    private final String secondAddress = getSecondAddress();
+
     @Test
     void successFulFillTest() {
 

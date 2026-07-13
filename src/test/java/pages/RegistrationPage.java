@@ -60,20 +60,20 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setDateOfBirth(String day, String month, String year) {
+    public RegistrationPage setDateOfBirth(String date) {
         $("#dateOfBirthInput").click();
-        calendar.setDate(day, month, year);
+        calendar.setDate(date);
         return this;
     }
 
-    public RegistrationPage setSubject(String value) {
-        subjectsInput.sendKeys(value.substring(0, 2));
+    public RegistrationPage selectSubject(String value) {
+        subjectsInput.sendKeys(value.substring(0, 3));
         subjectMenu.click();
         return this;
     }
 
     public RegistrationPage setHobby(String value) {
-        hobbiesContainer.$(byText(value)).click();
+        hobbiesContainer.$(byText(value)).scrollTo().click();
         return this;
     }
 

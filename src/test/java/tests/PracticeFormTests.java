@@ -10,15 +10,28 @@ import static tests.testdata.TestData.*;
 
 public class PracticeFormTests extends BaseTest {
 
+    private final String firstName = getFirstName();
+    private final String lastName = getLastName();
+    private final String email = getEmail();
+    private final String gender = getGender();
+    private final String mobile = getMobile();
+    private final String dateOfBirth = getDateOfBirth();
+    private final String subject = getSubject();
+    private final String hobby = getHobby();
+    private final String fileName = getFile();
+    private final String address = getAddress();
+    private final String state = getState();
+    private final String city = getCity(state);
+
     @Test
     void fillAllFieldsOfTheFormTest() {
 
         List<String> expectedData = List.of(
             firstName + " " + lastName,
-            testEmail,
+            email,
             gender,
             mobile,
-            dayOfBirth + " " + monthOfBirth + " " + yearOfBirth,
+            dateOfBirth,
             subject,
             hobby,
             fileName,
@@ -29,11 +42,11 @@ public class PracticeFormTests extends BaseTest {
         registrationPage.openPage()
             .typeFirstName(firstName)
             .typeLastName(lastName)
-            .typeUserEmail(testEmail)
+            .typeUserEmail(email)
             .setGender(gender)
             .typePhoneNumber(mobile)
-            .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
-            .setSubject(subject)
+            .setDateOfBirth(dateOfBirth)
+            .selectSubject(subject)
             .setHobby(hobby)
             .uploadPicture(fileName)
             .setAddress(address)
