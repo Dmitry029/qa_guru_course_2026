@@ -87,8 +87,4 @@ public class TestData {
     public static String getSecondAddress() {
         return faker.address().streetAddress();
     }
-    //public static String userName = "Alex Black";
-    //public static String userEmail = "alex@black.com";
-    //public static String firstAddress = "first address 1";
-    //public static String secondAddress ="second address 2";
 }
