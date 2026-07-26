@@ -67,7 +67,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage selectSubject(String value) {
-        subjectsInput.sendKeys(value.substring(0, 3));
+        subjectsInput.sendKeys(value.substring(0, 4));
         subjectMenu.click();
         return this;
     }

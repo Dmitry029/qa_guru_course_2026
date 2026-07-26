@@ -9,66 +9,56 @@ import java.util.Locale;
 
 public class TestData {
 
-    private static final Faker faker = new Faker();
+    private final Faker faker = new Faker();
 
-    public static String getFirstName() {
+    public String getFirstName() {
         return faker.name().firstName();
     }
 
-    public static String getLastName() {
+    public String getLastName() {
         return faker.name().lastName();
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return faker.internet().emailAddress();
     }
 
-    public static String getGender() {
-        List<String> genders = List.of("Male", "Female", "Other");
-        int index = faker.number().numberBetween(0, genders.size() - 1);
-        return genders.get(index);
+    public String getGender() {
+        return faker.options().option("Male", "Female", "Other");
     }
 
-    public static String getMobile() {
+    public String getMobile() {
         return faker.number().digits(10);
     }
 
-    public static String getDateOfBirth() {
+    public String getDateOfBirth() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = faker.date().birthday();
         return formatter.format(date);
     }
 
-    public static String getSubject() {
-        List<String> subjects = List.of("Maths", "Biology", "Computer Science", "Commerce", "Accounting", "Economics"
+    public String getSubject() {
+        return faker.options().option("Maths", "Biology", "Computer Science", "Commerce", "Accounting", "Economics"
             , "Social Studies", "History", "Physics");
-        int index = faker.number().numberBetween(0, subjects.size() - 1);
-        return subjects.get(index);
     }
 
-    public static String getHobby() {
-        List<String> hobbies = List.of("Sports", "Reading", "Music");
-        int index = faker.number().numberBetween(0, hobbies.size() - 1);
-        return hobbies.get(index);
+    public String getHobby() {
+        return faker.options().option("Sports", "Reading", "Music");
     }
 
-    public static String getFile() {
-        List<String> files = List.of("smile1.jpg", "smile2.jpg", "smile3.jpg");
-        int index = faker.number().numberBetween(0, files.size() - 1);
-        return files.get(index);
+    public String getFile() {
+        return faker.options().option("smile1.jpg", "smile2.jpg", "smile3.jpg");
     }
 
-    public static String getAddress() {
+    public String getAddress() {
         return faker.address().streetAddress();
     }
 
-    public static String getState() {
-        List<String> states = List.of("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
-        int index = faker.number().numberBetween(0, states.size() - 1);
-        return states.get(index);
+    public String getState() {
+        return faker.options().option("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
     }
 
-    public static String getCity(String state) {
+    public String getCity(String state) {
         List<String> cities = switch (state) {
             case "Rajasthan" -> List.of("Jaipur", "Jaiselmer");
             case "Haryana" -> List.of("Karnal", "Panipat");
@@ -76,15 +66,8 @@ public class TestData {
             case "NCR" -> List.of("Delhi", "Gurgaon", "Noida");
             default -> throw new IllegalStateException("Unexpected value: " + state);
         };
-        int index = faker.number().numberBetween(0, cities.size() - 1);
+        int index = faker.number().numberBetween(0, cities.size());
         return cities.get(index);
     }
 
-    public static String getUserName() {
-        return faker.name().fullName();
-    }
-
-    public static String getSecondAddress() {
-        return faker.address().streetAddress();
-    }
 }
