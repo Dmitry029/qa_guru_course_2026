@@ -11,51 +11,24 @@ public class TestData {
 
     private final Faker faker = new Faker();
 
-    public String getFirstName() {
-        return faker.name().firstName();
-    }
+    public final String firstName = faker.name().firstName();
+    public final String lastName = faker.name().lastName();
+    public final String email = faker.internet().emailAddress();
+    public final String gender = faker.options().option("Male", "Female", "Other");
+    public final String mobile = faker.number().digits(10);
+    public final String dateOfBirth = getDateOfBirth();
+    public final String subject = faker.options().option("Maths", "Biology", "Computer Science", "Commerce", "Accounting", "Economics"
+        , "Social Studies", "History", "Physics");
+    public final String hobby = faker.options().option("Sports", "Reading", "Music");
+    public final String fileName = faker.options().option("smile1.jpg", "smile2.jpg", "smile3.jpg");
+    public final String address = faker.address().streetAddress();
+    public final String state = faker.options().option("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
+    public final String city = getCity(state);
 
-    public String getLastName() {
-        return faker.name().lastName();
-    }
-
-    public String getEmail() {
-        return faker.internet().emailAddress();
-    }
-
-    public String getGender() {
-        return faker.options().option("Male", "Female", "Other");
-    }
-
-    public String getMobile() {
-        return faker.number().digits(10);
-    }
-
-    public String getDateOfBirth() {
+    private String getDateOfBirth() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = faker.date().birthday();
         return formatter.format(date);
-    }
-
-    public String getSubject() {
-        return faker.options().option("Maths", "Biology", "Computer Science", "Commerce", "Accounting", "Economics"
-            , "Social Studies", "History", "Physics");
-    }
-
-    public String getHobby() {
-        return faker.options().option("Sports", "Reading", "Music");
-    }
-
-    public String getFile() {
-        return faker.options().option("smile1.jpg", "smile2.jpg", "smile3.jpg");
-    }
-
-    public String getAddress() {
-        return faker.address().streetAddress();
-    }
-
-    public String getState() {
-        return faker.options().option("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
     }
 
     public String getCity(String state) {
@@ -69,5 +42,4 @@ public class TestData {
         int index = faker.number().numberBetween(0, cities.size());
         return cities.get(index);
     }
-
 }
