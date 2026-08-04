@@ -7,7 +7,7 @@ import tests.testdata.TestData;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.codeborne.selenide.logevents.SelenideLogger.step;
+import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PracticeFormTests extends BaseTest {

@@ -31,10 +31,9 @@ public class RegistrationPage {
     private final SelenideElement genderButtons = $("[for=gender-radio-1]");
 
     @Step("Open registration page /automation-practice-form")
-    public RegistrationPage openPage() {
+    public void openPage() {
         open("/automation-practice-form");
         pageTitle.shouldHave(text("Student Registration Form"));
-        return this;
     }
 
     @Step("Type first name \"{value}\"")
