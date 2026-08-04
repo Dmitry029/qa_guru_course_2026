@@ -1,6 +1,8 @@
 package tests;
 
+import io.qameta.allure.Feature;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import tests.testdata.TestData;
 
@@ -10,10 +12,12 @@ import java.util.Map;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Feature("Заполнение формы регистрации")
 public class PracticeFormTests extends BaseTest {
     private final TestData data = new TestData();
 
     @Test
+    @DisplayName("Регистрация с заполнением всех полей формы")
     void fillAllFieldsOfTheFormTest() {
 
         Map<String, String> expectedResults = getExpectedResults();
@@ -68,6 +72,7 @@ public class PracticeFormTests extends BaseTest {
 
 
     @Test
+    @DisplayName("Регистрация с заполнением только обязательных полей")
     void fillOnlyRequiredFieldsTest() {
 
         Map<String, String> expectedResults = new HashMap<>();
@@ -99,6 +104,8 @@ public class PracticeFormTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка того, что ввод менее 10 символов " +
+        "в поле phone приводит к появлению красного круга в этом поле")
     void negativeLessThanTenDigitsIntoThePhoneFieldTest() {
         step("Open registration page", () -> {
             registrationPage.openPage();
@@ -120,6 +127,8 @@ public class PracticeFormTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("Проверка того, что если не выбрать gender," +
+        " это поле подсвечивается красной рамкой ")
     void negativeDoNotSelectGenderTest() {
 
         step("Open registration page", () -> {
@@ -141,26 +150,8 @@ public class PracticeFormTests extends BaseTest {
     }
 
     @Test
-    void negativeDoNotFillFirstNameTest() {
-        step("Open registration page", () -> {
-            registrationPage.openPage();
-        });
-
-        step("Fill registration form", () -> {
-            registrationPage
-                .typeLastName(data.lastName)
-                .setGender(data.gender)
-                .typePhoneNumber(data.mobile)
-                .submitForm();
-        });
-
-        step("Check that First name field has circle", () -> {
-            String backgroundImage = registrationPage.getElementFirstNameCssValue("background-image");
-            assertThat(backgroundImage.contains("circle"));
-        });
-    }
-
-    @Test
+    @DisplayName("Проверка того, что если не заполнить обязательные поля" +
+        " эти поля подсвечиваются красной рамкой ")
     void negativeNoneOfTheFormFieldsAreFilledInTest() {
 
         step("Open registration page", () -> {
