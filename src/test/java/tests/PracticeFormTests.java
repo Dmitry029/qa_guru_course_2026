@@ -7,6 +7,7 @@ import tests.testdata.TestData;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.codeborne.selenide.logevents.SelenideLogger.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PracticeFormTests extends BaseTest {
@@ -17,23 +18,34 @@ public class PracticeFormTests extends BaseTest {
 
         Map<String, String> expectedResults = getExpectedResults();
 
-        registrationPage.openPage()
-            .typeFirstName(data.firstName)
-            .typeLastName(data.lastName)
-            .typeUserEmail(data.email)
-            .setGender(data.gender)
-            .typePhoneNumber(data.mobile)
-            .setDateOfBirth(data.dateOfBirth)
-            .selectSubject(data.subject)
-            .setHobby(data.hobby)
-            .uploadPicture(data.fileName)
-            .setAddress(data.address)
-            .setStateAndCity(data.state, data.city)
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
 
-        assertThat(resultComponent.isResultFormPresent()).isTrue();
-        expectedResults.forEach((key, value) -> resultComponent.checkResult(key, value));
-        resultComponent.closeLargeModal();
+        step("Fill registration form", () -> {
+            registrationPage
+                .typeFirstName(data.firstName)
+                .typeLastName(data.lastName)
+                .typeUserEmail(data.email)
+                .setGender(data.gender)
+                .typePhoneNumber(data.mobile)
+                .setDateOfBirth(data.dateOfBirth)
+                .selectSubject(data.subject)
+                .setHobby(data.hobby)
+                .uploadPicture(data.fileName)
+                .setAddress(data.address)
+                .setStateAndCity(data.state, data.city)
+                .submitForm();
+        });
+
+        step("Check that result form is present", () -> {
+            assertThat(resultComponent.isResultFormPresent()).isTrue();
+        });
+
+        step("Check that all form fields are filled in correctly", () -> {
+            expectedResults.forEach((key, value) -> resultComponent.checkResult(key, value));
+            resultComponent.closeLargeModal();
+        });
     }
 
 
