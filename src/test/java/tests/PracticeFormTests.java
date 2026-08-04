@@ -36,6 +36,7 @@ public class PracticeFormTests extends BaseTest {
         resultComponent.closeLargeModal();
     }
 
+
     private Map<String, String> getExpectedResults() {
         String dateOfBirthForValidation = "Date of Birth " + data.dateOfBirth.replaceFirst(" (\\d{4})$", ",$1");
 
