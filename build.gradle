@@ -1,53 +1,47 @@
 plugins {
     id 'java-library'
-    id 'io.qameta.allure' version '2.12.0'
+    id 'io.qameta.allure' version '4.1.0'
 }
-
-group = "guru.qa"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
-def selenideVersion = "7.16.2",
-    allureVersion = "2.32.0",
-    junitVersion = "5.14.2",
-    slf4jVersion = "2.0.17",
+def selenideVersion = "7.17.0",
+    junitVersion = "5.11.4",
+    allureSelenideVersion = "2.35.3",
     assertjVersion = "3.27.7",
-    javafakerVersion = "1.0.2"
+    javafakerVersion = "1.0.2",
+    slf4jVersion = "2.0.17",
+    allureVersion = "2.33.0"
+
+dependencies {
+    testImplementation("com.codeborne:selenide:$selenideVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("io.qameta.allure:allure-selenide:$allureSelenideVersion")
+    testImplementation("org.assertj:assertj-core:$assertjVersion")
+    testImplementation("com.github.javafaker:javafaker:$javafakerVersion")
+    testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
 
 allure {
     report {
-        version.set("2.32.0")
+        version.set(allureVersion)
     }
     adapter { // отвечает за появление папочки build/allure-results
         aspectjWeaver.set(true) //обработка аннотации @Step
         frameworks {
             junit5 { //название фреймворка
-                adapterVersion.set("2.32.0") //версия интеграции фреймворка и Allure
+                adapterVersion.set(allureVersion) //версия интеграции фреймворка и Allure
             }
         }
     }
 }
 
-dependencies {
-    testImplementation(
-            "org.junit.jupiter:junit-jupiter:$junitVersion",
-            "com.codeborne:selenide:$selenideVersion",
-            "org.assertj:assertj-core:$assertjVersion",
-            "com.github.javafaker:javafaker:$javafakerVersion",
-            "org.slf4j:slf4j-simple:$slf4jVersion"
-    )
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-tasks.test {
+tasks.withType(Test) {
     useJUnitPlatform()
+    systemProperties(System.getProperties())
 
     testLogging {
         lifecycle {

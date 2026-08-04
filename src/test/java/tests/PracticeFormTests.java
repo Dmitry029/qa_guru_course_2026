@@ -75,78 +75,116 @@ public class PracticeFormTests extends BaseTest {
         expectedResults.put("Gender", data.gender);
         expectedResults.put("Mobile", data.mobile);
 
-        registrationPage.openPage()
-            .typeFirstName(data.firstName)
-            .typeLastName(data.lastName)
-            .setGender(data.gender)
-            .typePhoneNumber(data.mobile)
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
 
-        assertThat(resultComponent.isResultFormPresent()).isTrue();
+        step("Fill registration form", () -> {
+            registrationPage
+                .typeFirstName(data.firstName)
+                .typeLastName(data.lastName)
+                .setGender(data.gender)
+                .typePhoneNumber(data.mobile)
+                .submitForm();
+        });
 
-        expectedResults.forEach((key, value) -> resultComponent.checkResult(key, value));
+        step("Check that result form is present", () -> {
+            assertThat(resultComponent.isResultFormPresent()).isTrue();
+        });
 
-        resultComponent.closeLargeModal();
+        step("Check that all form fields are filled in correctly", () -> {
+            expectedResults.forEach((key, value) -> resultComponent.checkResult(key, value));
+            resultComponent.closeLargeModal();
+        });
     }
 
     @Test
     void negativeLessThanTenDigitsIntoThePhoneFieldTest() {
-        registrationPage.openPage()
-            .typeFirstName(data.firstName)
-            .typeLastName(data.lastName)
-            .setGender(data.gender)
-            .typePhoneNumber(data.mobile)
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
 
-        String backgroundImage = registrationPage.getElementUserNumberCssValue("background-image");
-        assertThat(backgroundImage.contains("circle"));
+        step("Fill registration form", () -> {
+            registrationPage
+                .typeFirstName(data.firstName)
+                .typeLastName(data.lastName)
+                .setGender(data.gender)
+                .typePhoneNumber("12345")
+                .submitForm();
+        });
+
+        step("Check that Mobile field has circle", () -> {
+            String backgroundImage = registrationPage.getElementUserNumberCssValue("background-image");
+            assertThat(backgroundImage.contains("circle"));
+        });
     }
 
     @Test
     void negativeDoNotSelectGenderTest() {
 
-        registrationPage.openPage()
-            .typeFirstName(data.firstName)
-            .typeLastName(data.lastName)
-            .typePhoneNumber(data.mobile)
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
 
-        String colour = registrationPage.getElementGenderCssValue("color");
-        assertThat(colour.contains("(220, 53, 69, 1)"));
+        step("Fill registration form", () -> {
+            registrationPage
+                .typeFirstName(data.firstName)
+                .typeLastName(data.lastName)
+                .typePhoneNumber(data.mobile)
+                .submitForm();
+        });
+
+        step("Check that Gender field has red color", () -> {
+            String colour = registrationPage.getElementGenderCssValue("color");
+            assertThat(colour.contains("(220, 53, 69, 1)"));
+        });
     }
 
     @Test
     void negativeDoNotFillFirstNameTest() {
-        registrationPage.openPage()
-            .typeLastName(data.lastName)
-            .setGender(data.gender)
-            .typePhoneNumber(data.mobile)
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
 
-        String backgroundImage = registrationPage.getElementFirstNameCssValue("background-image");
-        assertThat(backgroundImage.contains("circle"));
+        step("Fill registration form", () -> {
+            registrationPage
+                .typeLastName(data.lastName)
+                .setGender(data.gender)
+                .typePhoneNumber(data.mobile)
+                .submitForm();
+        });
+
+        step("Check that First name field has circle", () -> {
+            String backgroundImage = registrationPage.getElementFirstNameCssValue("background-image");
+            assertThat(backgroundImage.contains("circle"));
+        });
     }
 
     @Test
     void negativeNoneOfTheFormFieldsAreFilledInTest() {
 
-        registrationPage.openPage()
-            .submitForm();
+        step("Open registration page", () -> {
+            registrationPage.openPage();
+        });
+        registrationPage.submitForm();
 
-        SoftAssertions softAssertions = new SoftAssertions();
+        step("Check errors images", () -> {
 
-        String backgroundImageFirstName = registrationPage.getElementFirstNameCssValue("background-image");
-        softAssertions.assertThat(backgroundImageFirstName).contains("circle");
+            SoftAssertions softAssertions = new SoftAssertions();
 
-        String backgroundImageLastName = registrationPage.getElementLastNameCssValue("background-image");
-        softAssertions.assertThat(backgroundImageLastName).contains("circle");
+            String backgroundImageFirstName = registrationPage.getElementFirstNameCssValue("background-image");
+            softAssertions.assertThat(backgroundImageFirstName).contains("circle");
 
-        String backgroundImage = registrationPage.getElementUserNumberCssValue("background-image");
-        assertThat(backgroundImage.contains("circle"));
+            String backgroundImageLastName = registrationPage.getElementLastNameCssValue("background-image");
+            softAssertions.assertThat(backgroundImageLastName).contains("circle");
 
-        String colour = registrationPage.getElementGenderCssValue("color");
-        softAssertions.assertThat(colour).contains("(220, 53, 69, 1)");
+            String backgroundImage = registrationPage.getElementUserNumberCssValue("background-image");
+            assertThat(backgroundImage.contains("circle"));
 
-        softAssertions.assertAll();
+            String colour = registrationPage.getElementGenderCssValue("color");
+            softAssertions.assertThat(colour).contains("(220, 53, 69, 1)");
+
+            softAssertions.assertAll();
+        });
     }
 }
