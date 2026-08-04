@@ -66,6 +66,7 @@ public class PracticeFormTests extends BaseTest {
         return expectedResults;
     }
 
+
     @Test
     void fillOnlyRequiredFieldsTest() {
 
