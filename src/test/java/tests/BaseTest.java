@@ -29,7 +29,6 @@ public class BaseTest {
         if (remoteUrl != null && !remoteUrl.isBlank()) {
             Configuration.remote = remoteUrl;
         }
-        //Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
         Configuration.browser = System.getProperty("browser", "chrome");
         Configuration.browserVersion = System.getProperty("browserVersion", "");
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
