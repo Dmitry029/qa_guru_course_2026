@@ -24,11 +24,16 @@ public class BaseTest {
 
     @BeforeAll
     public static void setUp() {
-        Configuration.browserSize = "1920*1080";
-        Configuration.baseUrl = "https://demoqa.com";
-        //Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
-        //Configuration.browser = "chrome";
-        //Configuration.browserVersion = "149.0";
+        Configuration.baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
+        String remoteUrl = System.getProperty("remoteUrl");
+        if (remoteUrl != null && !remoteUrl.isBlank()) {
+            Configuration.remote = remoteUrl;
+        }
+        Configuration.browser = System.getProperty("browser", "chrome");
+        Configuration.browserVersion = System.getProperty("browserVersion", "");
+        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
+        Configuration.headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+
         DesiredCapabilities capabilities = new DesiredCapabilities();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments(List.of("--disable-dev-shm-usage", "--no-sandbox"));
