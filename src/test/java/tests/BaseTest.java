@@ -26,7 +26,7 @@ public class BaseTest {
     public static void setUp() {
         Configuration.browserSize = "1920*1080";
         Configuration.baseUrl = "https://demoqa.com";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        //Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
         //Configuration.browser = "chrome";
         //Configuration.browserVersion = "149.0";
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -38,7 +38,6 @@ public class BaseTest {
             "enableVideo", true
         ));
         Configuration.browserCapabilities = capabilities;
-        Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
     }
 
     @BeforeEach
